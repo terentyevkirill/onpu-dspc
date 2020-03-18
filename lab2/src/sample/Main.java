@@ -3,7 +3,6 @@ package sample;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -12,8 +11,6 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.shape.Rectangle;
-import javafx.stage.WindowEvent;
-import sun.rmi.runtime.Log;
 
 public class Main extends Application {
     private static final double MAX_HEIGHT = 250;
