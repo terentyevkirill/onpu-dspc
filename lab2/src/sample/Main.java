@@ -3,7 +3,12 @@ package sample;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -41,6 +46,19 @@ public class Main extends Application {
     private Task<Void> task3;
     private Task<Void> task4;
     private Task<Void> task5;
+    private Thread thread1;
+    private Thread thread2;
+    private Thread thread3;
+    private Thread thread4;
+    private Thread thread5;
+    private RadioButton rbStart1;
+    private RadioButton rbCancel1;
+    private RadioButton rbStart2;
+    private RadioButton rbCancel2;
+    private RadioButton rbStart3;
+    private RadioButton rbCancel3;
+    private RadioButton rbStart4;
+    private RadioButton rbCancel4;
 
     @Override
     public void start(Stage primaryStage) {
@@ -48,10 +66,12 @@ public class Main extends Application {
         primaryStage.setResizable(false);
         createRectangles();
         createLabels();
+        createToggles();
         primaryStage.setScene(new Scene(rootPane, 700, 500, Color.TRANSPARENT));
         primaryStage.show();
         initializeTasks();
-        initializeAndStartThreads();
+        initializeThreads();
+        onAction();
         primaryStage.setOnCloseRequest(event -> {
             task1.cancel();
             task2.cancel();
@@ -61,20 +81,48 @@ public class Main extends Application {
         });
     }
 
-    private void initializeAndStartThreads() {
-        Thread thread1 = new Thread(task1);
+    private void onAction() {
+        rbStart1.setOnAction((ActionEvent event) -> {
+            thread1.resume();
+        });
+        rbCancel1.setOnAction((ActionEvent event) -> {
+            thread1.suspend();
+        });
+        rbStart2.setOnAction((ActionEvent event) -> {
+            thread2.resume();
+        });
+        rbCancel2.setOnAction((ActionEvent event) -> {
+            thread2.suspend();
+        });
+        rbStart3.setOnAction((ActionEvent event) -> {
+            thread3.resume();
+        });
+        rbCancel3.setOnAction((ActionEvent event) -> {
+            thread3.suspend();
+        });
+        rbStart4.setOnAction((ActionEvent event) -> {
+            thread4.resume();
+        });
+        rbCancel4.setOnAction((ActionEvent event) -> {
+            thread4.suspend();
+        });
+
+    }
+
+    private void initializeThreads() {
+        thread1 = new Thread(task1);
         thread1.setName("Thread 1");
         thread1.start();
-        Thread thread2 = new Thread(task2);
+        thread2 = new Thread(task2);
         thread2.setName("Thread 2");
         thread2.start();
-        Thread thread3 = new Thread(task3);
+        thread3 = new Thread(task3);
         thread3.setName("Thread 3");
         thread3.start();
-        Thread thread4 = new Thread(task4);
+        thread4 = new Thread(task4);
         thread4.setName("Thread 4");
         thread4.start();
-        Thread thread5 = new Thread(task5);
+        thread5 = new Thread(task5);
         thread5.setName("Thread 5");
         thread5.start();
     }
@@ -147,6 +195,47 @@ public class Main extends Application {
         };
     }
 
+    private void createToggles() {
+        ToggleGroup toggleGroup1 = new ToggleGroup();
+        rbStart1 = new RadioButton("Start");
+        rbStart1.setToggleGroup(toggleGroup1);
+        rbCancel1 = new RadioButton("Cancel");
+        rbCancel1.setToggleGroup(toggleGroup1);
+        toggleGroup1.selectToggle(rbStart1);
+        ToggleGroup toggleGroup2 = new ToggleGroup();
+        rbStart2 = new RadioButton("Start");
+        rbStart2.setToggleGroup(toggleGroup2);
+        rbCancel2 = new RadioButton("Cancel");
+        rbCancel2.setToggleGroup(toggleGroup2);
+        toggleGroup2.selectToggle(rbStart2);
+        ToggleGroup toggleGroup3 = new ToggleGroup();
+        rbStart3 = new RadioButton("Start");
+        rbStart3.setToggleGroup(toggleGroup3);
+        rbCancel3 = new RadioButton("Cancel");
+        rbCancel3.setToggleGroup(toggleGroup3);
+        toggleGroup3.selectToggle(rbStart3);
+        ToggleGroup toggleGroup4 = new ToggleGroup();
+        rbStart4 = new RadioButton("Start");
+        rbStart4.setToggleGroup(toggleGroup4);
+        rbCancel4 = new RadioButton("Cancel");
+        rbCancel4.setToggleGroup(toggleGroup4);
+        toggleGroup4.selectToggle(rbStart4);
+        GridPane toggleGridPane = new GridPane();
+        toggleGridPane.setLayoutX(60);
+        toggleGridPane.setLayoutY(400);
+        toggleGridPane.setHgap(80);
+        toggleGridPane.setVgap(10);
+        toggleGridPane.setPadding(new Insets(25, 0, 0, 20));
+        toggleGridPane.add(rbStart1, 0, 0);
+        toggleGridPane.add(rbCancel1, 0, 1);
+        toggleGridPane.add(rbStart2, 1, 0);
+        toggleGridPane.add(rbCancel2, 1, 1);
+        toggleGridPane.add(rbStart3, 2, 0);
+        toggleGridPane.add(rbCancel3, 2, 1);
+        toggleGridPane.add(rbStart4, 3, 0);
+        toggleGridPane.add(rbCancel4, 3, 1);
+        rootPane.getChildren().add(toggleGridPane);
+    }
 
     private void createLabels() {
         Text mainLabel = createDisplay(200, 50, "Площади прямоугольников в пикселях", Color.RED);
@@ -154,12 +243,12 @@ public class Main extends Application {
         Text thread2Label = createDisplay(230, 100, "Thread 2", Color.GRAY);
         Text thread3Label = createDisplay(385, 100, "Thread 3", Color.GRAY);
         Text thread4Label = createDisplay(540, 100, "Thread 4", Color.GRAY);
-        Text thread5Label = createDisplay(120, 450, "Thread 5 (Общая площадь):", Color.GRAY);
+        Text thread5Label = createDisplay(120, 400, "Thread 5 (Общая площадь):", Color.GRAY);
         labelSquare1 = createDisplay(90, 80, "", Color.RED);
         labelSquare2 = createDisplay(240, 80, "", Color.GREEN);
         labelSquare3 = createDisplay(395, 80, "", Color.BLUE);
         labelSquare4 = createDisplay(550, 80, "", Color.ORANGE);
-        labelSquare5 = createDisplay(340, 450, "", Color.RED);
+        labelSquare5 = createDisplay(340, 400, "", Color.RED);
         rootPane.getChildren().addAll(mainLabel, thread1Label, thread2Label, thread3Label, thread4Label, thread5Label,
                 labelSquare1, labelSquare2, labelSquare3, labelSquare4, labelSquare5);
     }
