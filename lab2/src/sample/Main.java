@@ -50,7 +50,6 @@ public class Main extends Application {
     private Thread thread2;
     private Thread thread3;
     private Thread thread4;
-    private Thread thread5;
     private RadioButton rbStart1;
     private RadioButton rbCancel1;
     private RadioButton rbStart2;
@@ -62,7 +61,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("Лабораторная работа №2");
+        primaryStage.setTitle("Лабораторная работа №3");
         primaryStage.setResizable(false);
         createRectangles();
         createLabels();
@@ -122,7 +121,7 @@ public class Main extends Application {
         thread4 = new Thread(task4);
         thread4.setName("Thread 4");
         thread4.start();
-        thread5 = new Thread(task5);
+        Thread thread5 = new Thread(task5);
         thread5.setName("Thread 5");
         thread5.start();
     }
